@@ -6,6 +6,8 @@
   $params = ["email", "password"];
   paramsPresenceCheck($params);
 
+  initSession();
+
   # Get user password, salt
   $stmt = $m->prepare("SELECT `password`, `salt`, `id` FROM `users` WHERE email = ?");
   $stmt->bind_param('s', $_POST['email']);
@@ -16,23 +18,17 @@
 
   # Verify password
   if ( $password != sha1(md5(substr($salt, 0, 4)).md5($_REQUEST['password']).md5(substr($salt, 4))) ) {
-    failureResponse("Incorrect password provided");
+    failureResponse("Incorrect old password provided");
   }
 
-  # Instantiate new session;
-  session_start();
-  session_regenerate_id(true);
-  $_SESSION = array();
-  $_SESSION['expires'] = time()+(60*30);
-  $_SESSION['requests'] = 0;
-
-  # Save session
-  $stmt = $m->prepare("INSERT INTO `sessions` (`session_id`, `user_id`, `created_at`) VALUES (?, ?, CURRENT_TIMESTAMP)");
-  $stmt->bind_param('si', session_id(), $userId);
+  # Delete user
+  $stmt = $m->prepare("DELETE FROM `users` WHERE `id` = ?");
+  $stmt->bind_param('s', $userId);
   if ( !$stmt->execute() ) {
     failureResponse("Internal server error");
   }
 
-  successResponse("Login successful", null);
+  include "logout.php";
+  successResponse("User deleted");
 
 ?>

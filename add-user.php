@@ -32,7 +32,6 @@
     failureResponse('Internal server error');
   }
 
-  # Send success response
   successResponse("User added successfully", null);
 
 ?>
