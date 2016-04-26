@@ -19,7 +19,7 @@
     failureResponse("Incorrect password provided");
   }
 
-  # Instantiate new session;
+  # Instantiate new session
   session_start();
   session_regenerate_id(true);
   $_SESSION = array();
