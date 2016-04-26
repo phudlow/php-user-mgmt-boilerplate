@@ -18,7 +18,7 @@
 
   # Verify password
   if ( $password != sha1(md5(substr($salt, 0, 4)).md5($_REQUEST['password']).md5(substr($salt, 4))) ) {
-    failureResponse("Incorrect old password provided");
+    failureResponse("Incorrect password provided");
   }
 
   # Delete user

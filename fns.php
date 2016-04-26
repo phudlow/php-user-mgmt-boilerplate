@@ -33,7 +33,7 @@
   # Check session expiry, and regen password every 5th access
   function initSession() {
     session_start();
-    if ( isset($_SESSION['requests']) && time() < $_SESSION['expires'] ) {
+    if ( isset($_SESSION['expires']) && time() < $_SESSION['expires'] ) {
       $_SESSION['expires'] = time()+(60*20);
       $_SESSION['requests'] = $_SESSION['requests'] + 1;
       if ( $_SESSION['requests'] == 5 ) {
