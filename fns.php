@@ -30,7 +30,7 @@
     }
   }
   
-  # Check session expiry, and regen password every 5th access
+  # Check session expiry, and regen id every 5th access
   function initSession() {
     session_start();
     if ( isset($_SESSION['expires']) && time() < $_SESSION['expires'] ) {
